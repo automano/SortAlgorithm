@@ -155,12 +155,12 @@ func BenchmarkSelectionSortInt1K(b *testing.B) {
 			data[i] = i ^ 0x2cc
 		}
 		b.StartTimer()
-		mysort.Sele(data)
+		mysort.SelectionSort(data)
 		b.StopTimer()
 	}
 }
 
-func BenchmarkRandomQuickSortInt1K(b *testing.B) {
+func BenchmarkShellSortInt1K(b *testing.B) {
 	b.StopTimer()
 	for i := 0; i < b.N; i++ {
 		data := make([]int, 1<<10)
@@ -168,7 +168,7 @@ func BenchmarkRandomQuickSortInt1K(b *testing.B) {
 			data[i] = i ^ 0x2cc
 		}
 		b.StartTimer()
-		mysort.RandomQuickSort(data)
+		mysort.ShellSort(data)
 		b.StopTimer()
 	}
 }
