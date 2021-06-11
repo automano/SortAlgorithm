@@ -8,7 +8,7 @@ import (
 )
 
 var ints = [...]int{74, 59, 238, -784, 9845, 959, 905, 0, 0, 42, 7586, -5467984, 7586}
-var posInts = []int{2, 3, 8, 7, 1, 2, 2, 2, 7, 3, 9, 8, 2, 1, 4, 2, 4, 6, 9, 2}
+var posInts = []int{2, 3, 8, 7, 12, 100, 40, 22, 1, 2, 2, 2, 7, 3, 9, 8, 2, 1, 4, 2, 4, 6, 9, 2}
 
 // IsSorted reports whether data is sorted.
 func IsSorted(data []int) bool {
@@ -106,7 +106,16 @@ func TestCountingSort(t *testing.T) {
 
 	mysort.CountingSort(data[0:], maxValue)
 	if !IsSorted(data[0:]) {
-		t.Errorf("sorted %v", ints)
+		t.Errorf("sorted %v", posInts)
+		t.Errorf("   got %v", data)
+	}
+}
+
+func TestBuckertSort(t *testing.T) {
+	data := posInts
+	data = mysort.BucketSort(data, 5)
+	if !IsSorted(data[0:]) {
+		t.Errorf("sorted %v", posInts)
 		t.Errorf("   got %v", data)
 	}
 }
@@ -233,6 +242,27 @@ func BenchmarkCountingSortInt1K(b *testing.B) {
 
 		b.StartTimer()
 		mysort.CountingSort(data, maxValue)
+		b.StopTimer()
+	}
+}
+
+func BenchmarkBucketSortInt1K(b *testing.B) {
+	b.StopTimer()
+
+	for i := 0; i < b.N; i++ {
+		data := make([]int, 1<<10)
+		for i := 0; i < len(data); i++ {
+			data[i] = i ^ 0x2cc
+		}
+
+		maxValue := math.MinInt32
+		for i := 0; i < len(data); i++ {
+			if data[i] > maxValue {
+				maxValue = data[i]
+			}
+		}
+		b.StartTimer()
+		mysort.BucketSort(data, 5)
 		b.StopTimer()
 	}
 }
