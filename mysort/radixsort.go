@@ -1,3 +1,5 @@
 package mysort
 
-func RadixSort()
+func RadixSort(data []int) {
+
+}

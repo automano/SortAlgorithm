@@ -262,7 +262,7 @@ func BenchmarkBucketSortInt1K(b *testing.B) {
 			}
 		}
 		b.StartTimer()
-		mysort.BucketSort(data, 5)
+		_ = mysort.BucketSort(data, 5)
 		b.StopTimer()
 	}
 }
