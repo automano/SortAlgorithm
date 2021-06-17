@@ -8,7 +8,7 @@ import (
 )
 
 var ints = [...]int{74, 59, 238, -784, 9845, 959, 905, 0, 0, 42, 7586, -5467984, 7586}
-var posInts = []int{2, 3, 8, 7, 12, 100, 40, 22, 1, 2, 2, 2, 7, 3, 9, 8, 2, 1, 4, 2, 4, 6, 9, 2}
+var posInts = []int{2, 3, 87, 47, 123, 100, 40, 223, 1, 2, 222, 2, 7, 347, 9, 538, 2, 121, 564, 632, 4, 666, 19, 28}
 
 // IsSorted reports whether data is sorted.
 func IsSorted(data []int) bool {
@@ -114,6 +114,15 @@ func TestCountingSort(t *testing.T) {
 func TestBuckertSort(t *testing.T) {
 	data := posInts
 	data = mysort.BucketSort(data, 5)
+	if !IsSorted(data[0:]) {
+		t.Errorf("sorted %v", posInts)
+		t.Errorf("   got %v", data)
+	}
+}
+
+func TestRadixSort(t *testing.T) {
+	data := posInts
+	mysort.RadixSort(data)
 	if !IsSorted(data[0:]) {
 		t.Errorf("sorted %v", posInts)
 		t.Errorf("   got %v", data)
@@ -263,6 +272,20 @@ func BenchmarkBucketSortInt1K(b *testing.B) {
 		}
 		b.StartTimer()
 		_ = mysort.BucketSort(data, 5)
+		b.StopTimer()
+	}
+}
+
+func BenchmarkRadixSortSortInt1K(b *testing.B) {
+	b.StopTimer()
+
+	for i := 0; i < b.N; i++ {
+		data := make([]int, 1<<10)
+		for i := 0; i < len(data); i++ {
+			data[i] = i ^ 0x2cc
+		}
+		b.StartTimer()
+		mysort.RadixSort(data)
 		b.StopTimer()
 	}
 }
